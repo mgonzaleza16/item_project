@@ -13,6 +13,7 @@ class ColumnSchema(BaseModel):
     is_composite_pk: Optional[List[str]] = None
     unique_with: Optional[str] = None
     disallow_zero: bool = False  # Nuevo parámetro
+    decimal_places: Optional[int] = None
 
 
 class SheetSchema(BaseModel):
@@ -104,6 +105,11 @@ class ExcelProcessor:
                     zero_cells_info = ', '.join([f"{column.new_name}{index + 2}" for index in zero_cells.index])
                     raise ValueError(f"La columna {column.new_name} contiene valores 0 en las celdas: {zero_cells_info}")
 
+    def _round_decimal_places(self) -> None:
+        for column in self.schema.columns:
+            if column.decimal_places is not None:
+                self.df[column.new_name] = self.df[column.new_name].round(column.decimal_places)
+
 
     def process(self) -> ExcelProcessorResult:
         try:
@@ -114,6 +120,7 @@ class ExcelProcessor:
             self._validate_column_types()
             self._validate_no_formulas()
             self._validate_primary_key()  # aquí es donde se produjo el error
+            self._round_decimal_places()
             self._validate_no_zero_values()
             self._validate_unique_values()
             if self.schema.sheet_name == "Itemizado":

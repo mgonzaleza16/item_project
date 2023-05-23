@@ -23,8 +23,12 @@ df_with_columns = add_columns_to_df.add_columns()
 
 # DataFrame de ejemplo y diccionario de parámetros
 
+```python
 df = pd.DataFrame(...)
 params = {"columna1": "valor1", "columna2": "valor2"}
+
+
+```
 
 # Crear instancia de la clase e ingresar el dataframe y el diccionario de parámetros
 
@@ -32,8 +36,10 @@ add_columns_to_df = AddColumnsToDataFrame(dataframe=df, parameters=params)
 
 # Agregar columnas al dataframe
 
+```python
 df_with_columns = add_columns_to_df.add_columns()
-`</code></div>``</div></pre>`
+
+```
 
 ## Validaciones
 
